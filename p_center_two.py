@@ -1,6 +1,8 @@
 import numpy as np
+import time
 
 def p_center_heuristic(distance_matrix, p, n_clients, n_facilities):
+    start_time = time.process_time()  # Record the start time
     selected_facilities = []
     not_selected_facilities = list(range(n_facilities))  # Initially, all facilities are not selected
     assignment = [-1]*n_clients
@@ -37,13 +39,16 @@ def p_center_heuristic(distance_matrix, p, n_clients, n_facilities):
 
     final_distance = max(np.min(distance_matrix[:, selected_facilities], axis=1))
 
-    return selected_facilities, not_selected_facilities, assignment, final_distance
+    end_time = time.process_time()  # Record the end time
+    processing_time = end_time - start_time  # Calculate the processing time
+
+    return selected_facilities, not_selected_facilities, assignment, final_distance, processing_time
 
 distance_matrix = np.loadtxt('./sample10/distance_matrix_0.csv', delimiter=',')
 p = 3
 n_clients = 5
 n_facilities = 5
-selected_facilities, not_selected_facilities, assignment, final_distance = p_center_heuristic(distance_matrix, p, n_clients, n_facilities)
+selected_facilities, not_selected_facilities, assignment, final_distance, processing_time = p_center_heuristic(distance_matrix, p, n_clients, n_facilities)
 
 print("\n\n-------Final report--------\n")
 print(f"Number of possible facilities: {n_facilities}, p: {p}")
@@ -51,3 +56,4 @@ print(f"Selected Facilities: {selected_facilities}")
 print(f"Not selected Facilities: {not_selected_facilities}")
 print(f"Client Assignment: {assignment}")
 print(f"Final Maximum Distance: {final_distance}")
+print(f"Processing Time: {processing_time} seconds")
