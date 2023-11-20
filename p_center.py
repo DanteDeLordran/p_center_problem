@@ -1,11 +1,11 @@
 import pulp
 import numpy as np
 
-distances = np.loadtxt('./samples5/distance_matrix_0.csv', delimiter=',')
+distances = np.loadtxt('./sample10/distance_matrix_0.csv', delimiter=',')
 
 problem = pulp.LpProblem("p-center", pulp.LpMinimize)
 
-n_clients, n_facilities = distances.shape
+n_clients , n_facilities = distances.shape
 p = 3
 
 x = pulp.LpVariable.dicts("x", ((i, j) for i in range(n_clients) for j in range(n_facilities)), cat='Binary')
@@ -31,4 +31,4 @@ problem.solve()
 print("Status:", pulp.LpStatus[problem.status])
 for v in problem.variables():
     print(v.name, "=", v.varValue)
-print("Objective =", pulp.value(problem.objective))
+print("Max distance =", pulp.value(problem.objective))
